@@ -2,7 +2,12 @@ import React from "react"
 import { View, Text, Image, StyleSheet } from "react-native"
 import { sizes } from "@presentation/theme/Styles"
 
-export default function ImageWithTitle({ label, url }: { label: string; url: string }) {
+interface Props {
+  label: string
+  url: string
+}
+
+export default function ImageWithTitle({ label, url }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
