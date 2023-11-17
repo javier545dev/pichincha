@@ -7,10 +7,18 @@ module.exports = {
       {
         alias: {
           "@src": "./src",
+          "@env": "./env",
           "@data": "./src/data",
           "@domain": "./src/domain",
           "@presentation": "./src/presentation",
         },
+      },
+    ],
+    [
+      "module:react-native-dotenv",
+      {
+        moduleName: "@env",
+        path: ".env",
       },
     ],
   ],

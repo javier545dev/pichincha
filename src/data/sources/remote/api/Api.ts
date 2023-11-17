@@ -1,12 +1,12 @@
 import axios from "axios"
+import { BASE_URL, AUTHOR_ID } from "@env"
 
 const ApiPichincha = axios.create({
-  baseURL:
-    "https://tribu-ti-staffing-desarrollo-afangwbmcrhucqfh.z01.azurefd.net/ipf-msa-productosfinancieros",
+  baseURL: process.env.NODE_ENV === "development" ? BASE_URL : BASE_URL,
   headers: {
     accept: "application/json",
     "Content-Type": "application/json",
-    authorId: "1234",
+    authorId: AUTHOR_ID,
   },
 })
 

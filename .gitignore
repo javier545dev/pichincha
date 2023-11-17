@@ -40,6 +40,19 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# env
+.env
+.env.staging
+.env.development
+.env.production
+
+# package manager
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
