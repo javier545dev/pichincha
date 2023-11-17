@@ -1,6 +1,7 @@
 import { AxiosError } from "axios"
 import { ProductsRepository } from "@domain/repositories/ProductsRepository"
 import { ApiPichincha } from "@data/sources/remote/api/Api"
+import { Product } from "@domain/entities/Product"
 
 export class ProductsRepositoryImpl implements ProductsRepository {
   async getProducts() {
@@ -14,7 +15,7 @@ export class ProductsRepositoryImpl implements ProductsRepository {
     }
   }
 
-  async createProduct(product: any) {
+  async createProduct(product: Product) {
     try {
       const response = await ApiPichincha.post("/bp/products", product)
       return Promise.resolve(response.data)
@@ -25,7 +26,7 @@ export class ProductsRepositoryImpl implements ProductsRepository {
     }
   }
 
-  async updateProduct(product: any) {
+  async updateProduct(product: Product) {
     try {
       const response = await ApiPichincha.put("/bp/products", product)
       return Promise.resolve(response.data)
