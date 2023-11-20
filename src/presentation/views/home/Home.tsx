@@ -1,5 +1,4 @@
 import React, { useCallback } from "react"
-import { View } from "react-native"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
@@ -7,12 +6,13 @@ import { HomeViewModel } from "@presentation/views/home/ViewModel"
 import { RootStackParamList } from "@presentation/navigation/MainStackNavigation"
 
 import Layout from "@presentation/layouts/Home"
-import HomeStyles from "@presentation/views/home/Styles"
 import InputText from "@presentation/components/InputText"
 import Loading from "@presentation/components/Loading"
 import Success from "@presentation/components/buttons/Success"
 import KeyboardAvoiding from "@presentation/components/keyboard/KeyboardAvoiding"
 import ListViewVertical from "@presentation/components/listView/ListViewVertical"
+import BodyHome from "@presentation/components/sections/BodyHome"
+import Footer from "@presentation/components/sections/Footer"
 
 import { colors } from "@presentation/theme/Styles"
 
@@ -31,7 +31,7 @@ export default function HomeScreen() {
   return (
     <Layout testID="homescreen">
       <KeyboardAvoiding>
-        <View style={HomeStyles.container}>
+        <BodyHome>
           <InputText
             placeholder="Search..."
             value={search}
@@ -43,11 +43,11 @@ export default function HomeScreen() {
           ) : (
             <ListViewVertical data={products} getProducts={getProducts} refreshing={refreshing} />
           )}
-        </View>
+        </BodyHome>
       </KeyboardAvoiding>
-      <View style={HomeStyles.footer}>
+      <Footer>
         <Success text="Agregar" onPress={() => navigation.navigate("ProductCreate")} />
-      </View>
+      </Footer>
     </Layout>
   )
 }

@@ -18,5 +18,6 @@ module.exports = {
     quotes: ["error", "double"],
     semi: ["error", "never"],
     "react-hooks/exhaustive-deps": "off",
+    "react-native/no-inline-styles": "off",
   },
 }

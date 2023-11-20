@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import { View, Text, ScrollView } from "react-native"
+import React from "react"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "@presentation/navigation/MainStackNavigation"
@@ -10,11 +9,15 @@ import InputTextWithLabel from "@presentation/components/inputs/InputTextWithLab
 import Success from "@presentation/components/buttons/Success"
 import Neutral from "@presentation/components/buttons/Neutral"
 import KeyboardAvoiding from "@presentation/components/keyboard/KeyboardAvoiding"
-import ProductCreateStyles from "@presentation/views/create/Styles"
 import ModalDatePicker from "@presentation/components/modals/ModalDatePicker"
 import ButtonWithLabel from "@presentation/components/ButtonWithLabel"
 import ViewWithLabel from "@presentation/components/ViewWithLabel"
 import LoadingCenter from "@presentation/components/LoadingCenter"
+import Header from "@src/presentation/components/header/Header"
+import Body from "@presentation/components/sections/Body"
+import Footer from "@presentation/components/sections/Footer"
+import Scroll from "@presentation/components/carousel/Scroll"
+import { useModalVisible } from "@presentation/hooks/useModalVisible"
 
 import TransformDateWithYear, {
   TransformDateWithYearString,
@@ -36,15 +39,16 @@ export default function ProductCreate() {
   } = CreateViewModel({
     navigation,
   })
-  const [visible, setVisible] = useState(false)
+
+  const { visible, closeModal, openModal } = useModalVisible()
 
   return (
     <Layout testID="createscreen">
       {loading && <LoadingCenter />}
       <KeyboardAvoiding>
-        <ScrollView contentContainerStyle={ProductCreateStyles.container}>
-          <Text style={ProductCreateStyles.title}>Formulario de Registro</Text>
-          <View style={ProductCreateStyles.section}>
+        <Scroll>
+          <Header>Formulario de Registro</Header>
+          <Body>
             <InputTextWithLabel
               label="ID"
               placeholder="ID"
@@ -85,7 +89,7 @@ export default function ProductCreate() {
             <ButtonWithLabel
               label="Fecha de lanzamiento"
               value={TransformDateWithYearString(date_release)}
-              onPress={() => setVisible(true)}
+              onPress={openModal}
             />
 
             <ViewWithLabel
@@ -98,25 +102,25 @@ export default function ProductCreate() {
               transparent={true}
               animationType="slide"
               current={date_release}
-              onRequestClose={() => setVisible(false)}
+              onRequestClose={closeModal}
               onChange={date => {
                 const _date = new Date(date.replaceAll("/", "-"))
                 onChange("date_release", _date)
                 onChange("date_revision", TransformDateWithYear(_date, 1))
-                setVisible(false)
+                closeModal()
               }}
             />
-          </View>
-        </ScrollView>
+          </Body>
+        </Scroll>
       </KeyboardAvoiding>
-      <View style={ProductCreateStyles.footer}>
+      <Footer>
         <Success
           text="Enviar"
           onPress={submit}
           disabled={!id || !name || !description || !logo || !date_release || !date_revision}
         />
         <Neutral text="Reiniciar" onPress={resetForm} />
-      </View>
+      </Footer>
     </Layout>
   )
 }

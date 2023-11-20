@@ -1,7 +1,6 @@
 import React from "react"
 import { StyleSheet } from "react-native"
-import DatePicker from "react-native-modern-datepicker"
-import { TransformDateWithYearString } from "@presentation/utils/TransformDateWithYear"
+import DatePicker, { getFormatedDate, getToday } from "react-native-modern-datepicker"
 
 interface Props {
   onChange: (dateString: string) => void
@@ -9,14 +8,15 @@ interface Props {
 }
 
 export default function DatePick({ onChange, current }: Props) {
-  const today = TransformDateWithYearString(new Date())
+  const today = getToday()
+  const currentDay = getFormatedDate(new Date(current))
   return (
     <DatePicker
       style={styles.picker}
       mode="calendar"
       minimumDate={today}
-      selected={TransformDateWithYearString(current)}
-      current={today}
+      selected={getFormatedDate(current)}
+      current={currentDay}
       onDateChange={onChange}
     />
   )

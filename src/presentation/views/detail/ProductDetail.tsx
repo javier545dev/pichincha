@@ -1,5 +1,4 @@
 import React from "react"
-import { View, ScrollView } from "react-native"
 import { Product as ProductInterface } from "@domain/entities/Product"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
@@ -16,8 +15,11 @@ import Danger from "@presentation/components/buttons/Danger"
 import Success from "@presentation/components/buttons/Success"
 import ModalWithText from "@presentation/components/Modal"
 import LoadingCenter from "@presentation/components/LoadingCenter"
-import ProductDetailStyles from "@presentation/views/detail/Styles"
-import TransformDate from "@src/presentation/utils/TransformDate"
+import Body from "@presentation/components/sections/Body"
+import Footer from "@presentation/components/sections/Footer"
+import Scroll from "@presentation/components/carousel/Scroll"
+
+import TransformDate from "@presentation/utils/TransformDate"
 
 interface Props {
   route: { params: ProductInterface }
@@ -32,9 +34,9 @@ export default function ProductDetail({ route }: Props) {
   return (
     <Layout testID="detailscreen">
       {isLoading && <LoadingCenter />}
-      <ScrollView contentContainerStyle={ProductDetailStyles.container}>
+      <Scroll>
         <HeaderTitleWithData title={`ID: ${id}`} subtitle="Información extra" />
-        <View style={ProductDetailStyles.body}>
+        <Body>
           <TextWithLabel label="Nombre" data={name} />
           <TextWithLabel label="Descripción" data={description} />
           <ImageWithTitle label="Logo" url={logo} />
@@ -43,8 +45,8 @@ export default function ProductDetail({ route }: Props) {
             data={TransformDate(new Date(date_release))}
           />
           <TextWithLabel label="Fecha de revisión" data={TransformDate(new Date(date_revision))} />
-        </View>
-      </ScrollView>
+        </Body>
+      </Scroll>
       <ModalWithText
         visible={visible}
         transparent={true}
@@ -54,7 +56,7 @@ export default function ProductDetail({ route }: Props) {
         <Success text={"Confirmar"} onPress={() => deleteProduct(id)} />
         <Neutral text={"Cancelar"} onPress={() => hideModal()} />
       </ModalWithText>
-      <View style={ProductDetailStyles.footer}>
+      <Footer>
         <Neutral
           text="Editar"
           onPress={() =>
@@ -69,7 +71,7 @@ export default function ProductDetail({ route }: Props) {
           }
         />
         <Danger text="Eliminar" onPress={() => showModal()} />
-      </View>
+      </Footer>
     </Layout>
   )
 }

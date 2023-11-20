@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import { View, Text, ScrollView } from "react-native"
+import React from "react"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "@presentation/navigation/MainStackNavigation"
@@ -11,13 +10,17 @@ import InputTextWithLabel from "@presentation/components/inputs/InputTextWithLab
 import Success from "@presentation/components/buttons/Success"
 import Neutral from "@presentation/components/buttons/Neutral"
 import KeyboardAvoiding from "@presentation/components/keyboard/KeyboardAvoiding"
-import ProductCreateStyles from "@presentation/views/create/Styles"
 import ModalDatePicker from "@presentation/components/modals/ModalDatePicker"
 import ButtonWithLabel from "@src/presentation/components/ButtonWithLabel"
 import ViewWithLabel from "@src/presentation/components/ViewWithLabel"
 import TransformDateWithYear from "@presentation/utils/TransformDateWithYear"
 import TransformDate from "@src/presentation/utils/TransformDate"
 import LoadingCenter from "@src/presentation/components/LoadingCenter"
+import Header from "@presentation/components/header/Header"
+import Body from "@presentation/components/sections/Body"
+import Footer from "@presentation/components/sections/Footer"
+import Scroll from "@presentation/components/carousel/Scroll"
+import { useModalVisible } from "@src/presentation/hooks/useModalVisible"
 
 interface Props {
   route: { params: ProductInterface }
@@ -30,15 +33,15 @@ export default function ProductUpdate({ route }: Props) {
       navigation,
       product: route.params,
     })
-  const [visible, setVisible] = useState(false)
+  const { visible, closeModal, openModal } = useModalVisible()
 
   return (
     <Layout>
       {loading && <LoadingCenter />}
       <KeyboardAvoiding>
-        <ScrollView contentContainerStyle={ProductCreateStyles.container}>
-          <Text style={ProductCreateStyles.title}>Editar Registro</Text>
-          <View style={ProductCreateStyles.section}>
+        <Scroll>
+          <Header>Editar Registro</Header>
+          <Body>
             <InputTextWithLabel
               label="ID"
               placeholder="ID"
@@ -80,7 +83,7 @@ export default function ProductUpdate({ route }: Props) {
             <ButtonWithLabel
               label="Fecha de lanzamiento"
               value={TransformDate(new Date(date_release))}
-              onPress={() => setVisible(true)}
+              onPress={openModal}
             />
 
             <ViewWithLabel
@@ -93,25 +96,25 @@ export default function ProductUpdate({ route }: Props) {
               transparent={true}
               animationType="slide"
               current={date_release}
-              onRequestClose={() => setVisible(false)}
+              onRequestClose={closeModal}
               onChange={date => {
                 const _date = new Date(date.replaceAll("/", "-"))
                 onChange("date_release", _date)
                 onChange("date_revision", TransformDateWithYear(_date, 1))
-                setVisible(false)
+                closeModal()
               }}
             />
-          </View>
-        </ScrollView>
+          </Body>
+        </Scroll>
       </KeyboardAvoiding>
-      <View style={ProductCreateStyles.footer}>
+      <Footer>
         <Success
           text="Enviar"
           onPress={submit}
           disabled={!id || !name || !description || !logo || !date_release || !date_revision}
         />
         <Neutral text="Volver" onPress={navigation.goBack} />
-      </View>
+      </Footer>
     </Layout>
   )
 }
